@@ -1,0 +1,6 @@
+openai
+PyPDF2
+python-dotenv
+langchain
+streamlit
+python-gemini-api
