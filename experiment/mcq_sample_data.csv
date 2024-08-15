@@ -1,0 +1,6 @@
+MCQ,Choices,Correct
+What is the main goal of machine learning?,a: To enable AI to imitate human learning | b: To provide accurate predictions | c: To automate complex tasks | d: To store and analyze large datasets,a
+Which of the following is NOT a part of the learning process in a machine learning algorithm?,a: Decision Process | b: Error Function | c: Optimization Process | d: Training Phase,d
+What type of machine learning uses labeled datasets to train its algorithm?,a: Supervised Learning | b: Unsupervised Learning | c: Semi-supervised Learning | d: Reinforcement Learning,a
+Which of the following is NOT an advantage of machine learning?,a: Pattern recognition | b: Personalized experiences | c: Elimination of human intervention | d: Large training dataset requirement,d
+What ethical concern arises when machine learning algorithms are trained on biased data?,a: Technological Singularity | b: Privacy Issues | c: Bias and Discrimination | d: AI Impact on Jobs,c

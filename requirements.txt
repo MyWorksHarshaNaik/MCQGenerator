@@ -1,8 +1,8 @@
-openai
-PyPDF2
-python-dotenv
 langchain
-streamlit
-python-gemini-api
-google-generativeai
 langchain-google-genai
+streamlit
+python-dotenv
+pyPDF2
+python-dotenv
+
+-e .
