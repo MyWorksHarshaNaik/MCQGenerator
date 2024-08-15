@@ -4,3 +4,5 @@ python-dotenv
 langchain
 streamlit
 python-gemini-api
+google-generativeai
+langchain-google-genai
