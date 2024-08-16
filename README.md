@@ -14,7 +14,7 @@ conda activate genproj
 pip install -r requirements.txt 
 ```
 
-### Used Gemini api and google models
+### Used Gemini model
 
 ### Step 4: create experiments file 
 #### we can do some experiments before modular coding 
