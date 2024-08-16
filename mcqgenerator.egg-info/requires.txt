@@ -1,7 +1,6 @@
 langchain
-langchain-google-genai
 streamlit
 python-dotenv
 PyPDF2
-
--e .
+langchain-google-genai
+python-gemini-api

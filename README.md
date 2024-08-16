@@ -27,3 +27,8 @@ pip install -r requirements.txt
 ### Step 7: create MCQGenerator.py file in mcqgenerator(folder)
 
 ### Step 8: create StreamlitApp.py file 
+
+### Step 9: Run StreamlitApp.py
+```bash
+streamlit run StreamlitApp.py
+```
