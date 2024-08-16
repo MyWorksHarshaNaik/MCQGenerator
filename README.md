@@ -13,3 +13,17 @@ conda activate genproj
 ```bash
 pip install -r requirements.txt 
 ```
+
+### Used Gemini api and google models
+
+### Step 4: create experiments file 
+#### we can do some experiments before modular coding 
+#### in experiment/mcq_test.ipynb file 
+
+### Step 5: create logger.py file in mcqgenerator(folder)
+
+### Step 6: create utils.py file in mcqgenerator(folder)
+
+### Step 7: create MCQGenerator.py file in mcqgenerator(folder)
+
+### Step 8: create StreamlitApp.py file 
