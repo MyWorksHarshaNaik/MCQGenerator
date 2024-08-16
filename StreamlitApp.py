@@ -1,59 +1,78 @@
 import pandas as pd
-import os
 import json
 import traceback
-from dotenv import load_dotenv
+import streamlit as st
 from src.mcqgenerator.utils import read_file, get_table_data
 from src.mcqgenerator.logger import logging
-import streamlit as st
 from src.mcqgenerator.MCQGenerator import generate_evaluate_chain
 
 # Load the JSON Response
-with open("D:\GenerativeAI\MCQGenerator\Response.json", "r") as f:
-    response_json = json.load(f)
+response_path = "D:\\GenerativeAI\\MCQGenerator\\Response.json"
+try:
+    with open(response_path, "r") as f:
+        response_json = json.load(f)
+except FileNotFoundError:
+    st.error(f"Response JSON file not found at {response_path}.")
+    response_json = {}
+except json.JSONDecodeError:
+    st.error(f"Error decoding JSON from file {response_path}.")
+    response_json = {}
 
 # Title of the Web App
 st.title("MCQ Generator using Gen AI 🤖")
 
+# Convert DataFrame to CSV
+@st.cache_data
+def convert_df(df):
+    return df.to_csv(index=False).encode('utf-8')
+
 # Creating a Form
 with st.form("user_inputs"):
-
-    # File Uploader
-    uploaded_file = st.file_uploader("Choose a file containing a description of your topic (.txt or .pdf): ")
-
-    # Input Fields
+    uploaded_file = st.file_uploader("Choose a file containing a description of your topic (.txt or .pdf):")
     question_count = st.number_input("Number of Questions", min_value=3, value=50)
     subject = st.text_input("Insert Subject Title")
-    tone = st.text_input("Complexity Level: ", placeholder="Simple")
+    tone = st.text_input("Complexity Level:", placeholder="Simple")
     button = st.form_submit_button("Generate MCQs")
 
-    if button and uploaded_file is not None and question_count and subject and tone:
-        with st.spinner("Loading... "):
+if button:
+    if uploaded_file is None:
+        st.error("Please upload a file.")
+    elif not subject:
+        st.error("Please provide a subject title.")
+    elif not tone:
+        st.error("Please specify the complexity level.")
+    else:
+        with st.spinner("Generating MCQs..."):
             try:
                 data = read_file(uploaded_file)
                 response = generate_evaluate_chain(
                     {"text": data, "number": question_count, "subject": subject, "tone": tone, "response_json": response_json})
 
-            except Exception as e:
-                traceback.print_exception(type(e), e, e.__traceback__)
-                st.error("An error occurred. Please try again.")
-            else:
                 if isinstance(response, dict):
                     quiz = response.get("quiz")
-                    quiz = quiz.split('\n', 1)[1]
-                    quiz = quiz.replace("'", "\"")
-                    # quiz = json.loads(quiz)
+                    if quiz:
+                        quiz = quiz.split('\n', 1)[1] if '\n' in quiz else quiz
+                        quiz = quiz.replace("'", "\"")
 
-                    table_data = get_table_data(quiz)
-                    if table_data is not None:
-                        df = pd.DataFrame(table_data)
-                        df.index = df.index + 1
-                        st.table(df)
-                        # st.text_area(label="Generated MCQs", value=quiz)
-                        st.text_area(label="Review",
-                                     value=response.get("review"))
-
+                        table_data = get_table_data(quiz)
+                        if table_data:
+                            df = pd.DataFrame(table_data)
+                            df.index = df.index + 1
+                            st.session_state.df = df  # Store DataFrame in session state
+                            st.session_state.quiz_review = response.get("review", "No review available.")
+                            st.table(df)
+                        else:
+                            st.error("Error in processing table data.")
                     else:
-                        st.error("Error in Table Data")
+                        st.error("No quiz data found in response.")
                 else:
-                    st.write(response)
+                    st.error("Invalid response format.")
+            except Exception as e:
+                logging.error("An error occurred while generating MCQs.", exc_info=True)
+                st.error("An error occurred. Please try again.")
+
+# Display download button outside the form
+if 'df' in st.session_state:
+    csv = convert_df(st.session_state.df)
+    st.download_button("Download MCQs", csv, "MCQs.csv", "text/csv", key='download-csv')
+    st.text_area(label="Review", value=st.session_state.quiz_review)
