@@ -7,7 +7,8 @@ from src.mcqgenerator.logger import logging
 from src.mcqgenerator.MCQGenerator import generate_evaluate_chain
 
 # Load the JSON Response
-response_path = "D:\\GenerativeAI\\MCQGenerator\\Response.json"
+# response_path = "D:\\GenAI\\MCQGenerator\\Response.json"
+response_path = "D:\\GenAI\\MCQGenerator\\Response.json"
 try:
     with open(response_path, "r") as f:
         response_json = json.load(f)

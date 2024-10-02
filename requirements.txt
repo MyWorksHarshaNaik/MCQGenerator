@@ -1,7 +1,9 @@
 langchain
-langchain-google-genai
 streamlit
 python-dotenv
 PyPDF2
+langchain-google-genai
+python-gemini-api
 
+#for installation of local packages
 -e .
