@@ -8,16 +8,20 @@ from src.mcqgenerator.MCQGenerator import generate_evaluate_chain
 
 # Load the JSON Response
 # response_path = "D:\\GenAI\\MCQGenerator\\Response.json"
-response_path = "D:\\GenAI\\MCQGenerator\\Response.json"
-try:
-    with open(response_path, "r") as f:
-        response_json = json.load(f)
-except FileNotFoundError:
-    st.error(f"Response JSON file not found at {response_path}.")
-    response_json = {}
-except json.JSONDecodeError:
-    st.error(f"Error decoding JSON from file {response_path}.")
-    response_json = {}
+# response_path = "D:\\GenAI\\MCQGenerator\\Response.json"
+
+with open('Response.json', 'r') as file:
+    RESPONSE_JSON = json.load(file)
+    
+# try:
+#     with open(response_path, "r") as f:
+#         response_json = json.load(f)
+# except FileNotFoundError:
+#     st.error(f"Response JSON file not found at {response_path}.")
+#     response_json = {}
+# except json.JSONDecodeError:
+#     st.error(f"Error decoding JSON from file {response_path}.")
+#     response_json = {}
 
 # Title of the Web App
 st.title("MCQ Generator using Gen AI 🤖")
@@ -47,7 +51,7 @@ if button:
             try:
                 data = read_file(uploaded_file)
                 response = generate_evaluate_chain(
-                    {"text": data, "number": question_count, "subject": subject, "tone": tone, "response_json": response_json})
+                    {"text": data, "number": question_count, "subject": subject, "tone": tone, "response_json": RESPONSE_JSON})
 
                 if isinstance(response, dict):
                     quiz = response.get("quiz")
